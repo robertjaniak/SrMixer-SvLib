@@ -5,9 +5,10 @@
  *      Author: rober
  */
 
-#ifndef INC_OUT_H_
-#define INC_OUT_H_
+#ifndef SVLIB_INC_OUT_H_
+#define SVLIB_INC_OUT_H_
 
+#include "global.h"
 #include "timer.h"
 #include "reg.h"
 #include "stdBool.h"
@@ -103,4 +104,4 @@ Out_t* OUT_Group_GetActiveOut(Out_Group_t* out_group);
 void OUT_CallbackRegister(Out_t* out, void (*CallbackPtr)(void*), Out_events event);
 void OUTGROUP_CallbackRegister(Out_Group_t* outGroup, void (*CallbackPtr)(void*), Out_Group_events event);
 
-#endif /* INC_OUT_H_ */
+#endif /* SVLIB_INC_OUT_H_ */

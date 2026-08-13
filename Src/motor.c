@@ -5,8 +5,9 @@
  *      Author: rober
  */
 
-#include <stdlib.h>
+
 #include "motor.h"
+#include <stdlib.h>
 
 #define MAX_PWM_DUTY 3000
 
@@ -479,7 +480,7 @@ void Motor_RampInit(Motor_t* motor, uint32_t accelTime, uint32_t decelTime){
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-void Motor_GPIO_Init(Motor_t* motor, GPIO_TypeDef *port_A, uint16_t pin_A, GPIO_TypeDef *port_B, uint16_t pin_B, const char* name){
+void Motor_GPIO_Init(Motor_t* motor, GPIO_TypeDef *port_A, uint16_t pin_A, GPIO_TypeDef *port_B, uint16_t pin_B, char* name){
 
 	motor->name = name;
 
@@ -500,7 +501,7 @@ void Motor_GPIO_Init(Motor_t* motor, GPIO_TypeDef *port_A, uint16_t pin_A, GPIO_
 void Motor_PWM_Init(Motor_t* motor, Motor_mode mode,
 		TIM_HandleTypeDef* htim_A, uint32_t channel_A, TIM_HandleTypeDef*
 		htim_B, uint32_t channel_B,
-		const char* name, int32_t minSpeed, int32_t maxSpeed)
+		char* name, int32_t minSpeed, int32_t maxSpeed)
 {
 
 	motor->name = name;

@@ -5,43 +5,44 @@
  *      Author: rober
  */
 
-#ifndef INC_DEBUG_DEF_H_
-#define INC_DEBUG_DEF_H_
+#ifndef SVLIB_INC_DEBUG_DEF_H_
+#define SVLIB_INC_DEBUG_DEF_H_
 
-#include "usart.h"
+//#include "usart.h"
+#include "global.h"
 #include "string.h"
 #include "stdio.h"
 
-#define DEBUG_MESSAGE_BUFFER_SIZE 64
-char debugMessageBuffer[DEBUG_MESSAGE_BUFFER_SIZE];
+//#define DEBUD_MESSAGE_SIZE 64 - should be declared in file where debug is used
+//char debugMessage[DEBUG_MESSAGE_SIZE]; - should be declared in file where debug is used
 
 //#define FIRMWARE_VERSION __DATE__
 #define FIRMWARE_VERSION CURRENT_DATE
 #define FIRMWARE_CONFIG CURRENT_CONFIG
 
-#define PRINT_MSG(msg) HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), 100);
+#define PRINT_MSG(msg) //HAL_UART_Transmit(&huart3, (uint8_t*)msg, strlen(msg), 100);
 #define PRINT_STR(msg) PRINT_MSG(msg)
 
 #define PRINT_MSG_STR(msg, str) { 			\
-  sprintf(debug_msg_buffer, msg, str);		\
-  PRINT_MSG(debug_msg_buffer)						\
+  sprintf(debugMessage, msg, str);		\
+  PRINT_MSG(messageBuffer)						\
 }
 
 #define PRINT_MSG_INT(msg, val) { 			\
-  sprintf(debug_msg_buffer, msg, val);		\
-  PRINT_MSG(debug_msg_buffer)						\
+  sprintf(debugMessage, msg, val);		\
+  PRINT_MSG(messageBuffer)						\
 }
 
 #define VALUE_MSG "value: %ld \r\n"
 #define PRINT_VALUE(value) { 				\
-  sprintf(debug_msg_buffer, VALUE_MSG, (uint32_t)value);		\
-  PRINT_MSG(debug_msg_buffer)						\
+  sprintf(debugMessage, VALUE_MSG, (uint32_t)value);		\
+  PRINT_MSG(messageBuffer)						\
 }
 
 #define ERROR_MSG "ERROR !!! : %d \r\n"
 #define PRINT_ERROR(error) { 				\
-  sprintf(debug_msg_buffer, ERROR_MSG, error);		\
-  PRINT_MSG(debug_msg_buffer)						\
+  sprintf(debugMessage, ERROR_MSG, error);		\
+  PRINT_MSG(messageBuffer)						\
 }
 
 #ifdef DEBUG
@@ -69,4 +70,4 @@ void workingTime_Init(WorkingTime_t* wt, char* name);
 void workingTime_Start(WorkingTime_t* wt);
 void workingTime_Print(WorkingTime_t* wt);
 
-#endif /* INC_DEBUG_DEF_H_ */
+#endif /* SVLIB_INC_DEBUG_DEF_H_ */

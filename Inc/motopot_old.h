@@ -5,8 +5,8 @@
  *      Author: Dom
  */
 
-#ifndef INC_MOTOPOT_H_
-#define INC_MOTOPOT_H_
+#ifndef SVLIB_INC_MOTOPOT_H_
+#define SVLIB_INC_MOTOPOT_H_
 
 #include "global.h"
 #include "motor.h"
@@ -176,7 +176,10 @@ typedef struct{
 
 } Motopot2_t;
 
-uint32_t readAnalog(ADC_HandleTypeDef* hadc, uint32_t channel);
+
+#ifdef HAL_ADC_MODULE_ENABLED
+	uint32_t readAnalog(ADC_HandleTypeDef* hadc, uint32_t channel);
+#endif /* HAL_ADC_MODULE_ENABLED */
 
 //uint32_t Analog_BufferRead(uint32_t index);
 
@@ -225,4 +228,4 @@ uint32_t getRealDistance(uint32_t currenValue, uint32_t desiredValue);
 //bool isEqual(uint16_t current_value, uint16_t expected_value, uint16_t tolerance);
 
 
-#endif /* INC_MOTOPOT_H_ */
+#endif /* SVLIB_INC_MOTOPOT_H_ */

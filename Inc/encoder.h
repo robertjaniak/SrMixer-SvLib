@@ -5,9 +5,10 @@
  *      Author: rober
  */
 
-#ifndef INC_ENCODER_H_
-#define INC_ENCODER_H_
+#ifndef SVLIB_INC_ENCODER_H_
+#define SVLIB_INC_ENCODER_H_
 
+#include "global.h"
 //#define POT_TURN_TOLERANCE 0 // for Turn detect
 //#define POT_IDLE_TOLERANCE 1 // for Idle detect
 //#define POT_DEFAULT_REFRESH_TIME  100
@@ -154,4 +155,4 @@ void Encoder_Service();
 //
 //void positionAverage(Pot_t* pot);
 
-#endif /* INC_ENCODER_H_ */
+#endif /* SVLIB_INC_ENCODER_H_ */

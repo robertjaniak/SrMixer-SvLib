@@ -5,10 +5,9 @@
  *      Author: Dom
  */
 
-#ifndef INC_DISPLAY_H_
-#define INC_DISPLAY_H_
+#ifndef SVLIB_INC_DISPLAY_H_
+#define SVLIB_INC_DISPLAY_H_
 
-#include "main.h"
 #include "global.h"
 #include "buffer.h"
 
@@ -131,4 +130,4 @@ uint8_t menu_get_level(menu_node_t *menuNode);
 uint8_t menu_get_index(menu_t* menu, menu_node_t *menuNode);
 void menu_refresh(menu_t* menu);
 
-#endif /* INC_DISPLAY_H_ */
+#endif /* SVLIB_INC_DISPLAY_H_ */

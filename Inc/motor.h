@@ -8,8 +8,8 @@
 #include "global.h"
 #include "timer.h"
 
-#ifndef INC_MOTOR_H_
-#define INC_MOTOR_H_
+#ifndef SVLIB_INC_MOTOR_H_
+#define SVLIB_INC_MOTOR_H_
 
 typedef enum {
 	MOTOR_GPIO,
@@ -94,8 +94,8 @@ typedef struct {
 
 } Motor_t;
 
-void Motor_GPIO_Init(Motor_t* motor, GPIO_TypeDef *port_A, uint16_t pin_A, GPIO_TypeDef *port_B, uint16_t pin_B, const char* name);
-void Motor_PWM_Init(Motor_t* motor, Motor_mode mode, TIM_HandleTypeDef* htim_A, uint32_t channel_A, TIM_HandleTypeDef* htim_B, uint32_t channel_B, const char* name, int32_t minSpeed, int32_t maxSpeed);
+void Motor_GPIO_Init(Motor_t* motor, GPIO_TypeDef *port_A, uint16_t pin_A, GPIO_TypeDef *port_B, uint16_t pin_B, char* name);
+void Motor_PWM_Init(Motor_t* motor, Motor_mode mode, TIM_HandleTypeDef* htim_A, uint32_t channel_A, TIM_HandleTypeDef* htim_B, uint32_t channel_B, char* name, int32_t minSpeed, int32_t maxSpeed);
 void Motor_RampInit(Motor_t* motor, uint32_t accel_time, uint32_t decel_time);
 
 void Motor_Service(Motor_t* motor);
@@ -121,4 +121,4 @@ void Motor_MoveInTime_NonBlockingMode(Motor_t* motor, int32_t speed, uint32_t ti
 
 void updatePWMSpeed(Motor_t* motor);
 
-#endif /* INC_MOTOR_H_ */
+#endif /* SVLIB_INC_MOTOR_H_ */

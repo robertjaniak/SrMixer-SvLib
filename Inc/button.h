@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef INC_BUTTON_H_
-#define INC_BUTTON_H_
+#ifndef SVLIB_INC_BUTTON_H_
+#define SVLIB_INC_BUTTON_H_
 
 #include "global.h"
 #include "timer.h"
@@ -90,8 +90,8 @@ typedef struct {
 
 } Button_t;
 
-void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, const char* name, BTN_Modes mode);
-void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, const char* name, BTN_Modes mode);
+void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, char* name, BTN_Modes mode);
+void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, char* name, BTN_Modes mode);
 void Button_StartDebouncing(Button_t* btn);
 void Button_Service(Button_t* btn);
 void Button_CallbackRegister(Button_t* btn, void (*CallbackPtr)(void*), BTN_Events event);
@@ -99,4 +99,4 @@ void Button_CallbackRegister(Button_t* btn, void (*CallbackPtr)(void*), BTN_Even
 //Button Mux for ToDo
 
 
-#endif /* INC_BUTTON_H_ */
+#endif /* SVLIB_INC_BUTTON_H_ */

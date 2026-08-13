@@ -53,7 +53,7 @@ void static Button_Init(Button_t* btn){
 	btn->BTN_Event_DoublePress_Callback_Flag = 1;
 }
 
-void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, const char* name, BTN_Modes mode){
+void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, char* name, BTN_Modes mode){
 
 		btn->type = BTN_TYPE_GPIO;
 
@@ -68,7 +68,7 @@ void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, const cha
 		Button_Init(btn);
 }
 
-void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, const char* name, BTN_Modes mode){
+void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, char* name, BTN_Modes mode){
 
 		btn->type = BTN_TYPE_MUX;
 

@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef INC_LED_H_
-#define INC_LED_H_
+#ifndef SVLIB_INC_LED_H_
+#define SVLIB_INC_LED_H_
 
 #include "global.h"
 #include "timer.h"
@@ -76,4 +76,4 @@ void LED_Group_SetActiveIndex(LED_Group_t* led_group, int32_t index);
 int32_t LED_Group_GetActiveIndex(LED_Group_t* led_group);
 LED_t* LED_Group_GetActiveLed(LED_Group_t* led_group);
 
-#endif /* INC_LED_H_ */
+#endif /* SVLIB_INC_LED_H_ */

@@ -5,7 +5,9 @@
  *      Author: rober
  */
 
+
 #include "osc.h"
+//#include "debug_message.h"
 #include "stdio.h"
 #include "ethernet.h"
 #include "string.h"
@@ -102,7 +104,7 @@ void osc_read_message(){
 		}
 	}
 	else {
-		DBG_PRINT("Wrong Prefix");
+		//DBG_PRINT("Wrong Prefix");
 	}
 };
 
@@ -111,14 +113,14 @@ void osc_read_bundle(){
 	tosc_bundle bundle;
 	tosc_message message;
 
-	DBG_PRINT("OSC BUNDLE RECEIVED \r\n");
+	//DBG_PRINT("OSC BUNDLE RECEIVED \r\n");
 
 	tosc_parseBundle(&bundle, (char*)osc_ptr->rx.data, osc_ptr->rx.elements);
 
 	while (tosc_getNextMessage(&bundle, &message)){
 
-		DBG_PRINT(tosc_getAddress(&message))
-		DBG_VALUE(tosc_getNextInt32(&message))
+		//DBG_PRINT(tosc_getAddress(&message))
+		//DBG_VALUE(tosc_getNextInt32(&message))
 
 	}
 };

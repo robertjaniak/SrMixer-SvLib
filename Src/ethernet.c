@@ -6,15 +6,25 @@
  */
 
 
-#include "main.h"
-#include "ethernet.h"
-#include "socket.h"
 
+#include "ethernet.h"
+#include "debug.h"
 #include <string.h>
 #include <stdio.h>
+#include "socket.h"
 
-extern UART_HandleTypeDef huart1;
-extern SPI_HandleTypeDef hspi2;
+#define DEBUG_MESSAGE_SIZE 64
+char debugMessage[DEBUG_MESSAGE_SIZE];
+
+#ifdef HAL_UART_MODULE_ENABLED
+	extern UART_HandleTypeDef huart1;
+#endif /* HAL_SPI_MODULE_ENABLED */
+
+
+#ifdef HAL_SPI_MODULE_ENABLED
+	extern SPI_HandleTypeDef hspi2;
+#endif /* HAL_SPI_MODULE_ENABLED */
+
 
 #define HUART &huart1
 #define HSPI &hspi2
@@ -30,13 +40,20 @@ void cs_desel() {
 }
 
 uint8_t spi_rb(void) {
-	uint8_t rbuf;
-	HAL_SPI_Receive(HSPI, &rbuf, 1, 0xFFFFFFFF);
+	uint8_t rbuf = 0;
+
+	#ifdef HAL_SPI_MODULE_ENABLED
+		HAL_SPI_Receive(HSPI, &rbuf, 1, 0xFFFFFFFF);
+	#endif /* HAL_SPI_MODULE_ENABLED */
+
 	return rbuf;
 }
 
 void spi_wb(uint8_t b) {
-	HAL_SPI_Transmit(HSPI, &b, 1, 0xFFFFFFFF);
+
+	#ifdef HAL_SPI_MODULE_ENABLED
+		HAL_SPI_Transmit(HSPI, &b, 1, 0xFFFFFFFF);
+	#endif /* HAL_SPI_MODULE_ENABLED */
 }
 
 #define PRINT_HEADER() do  {\
@@ -47,14 +64,14 @@ void spi_wb(uint8_t b) {
 
 #define PRINT_NETINFO(netInfo) do {\
   PRINT_STR(NETWORK_MSG);\
-  sprintf(msg, MAC_MSG, netInfo.mac[0], netInfo.mac[1], netInfo.mac[2], netInfo.mac[3], netInfo.mac[4], netInfo.mac[5]);\
-  PRINT_STR(msg);\
-  sprintf(msg, IP_MSG, netInfo.ip[0], netInfo.ip[1], netInfo.ip[2], netInfo.ip[3]);										\
-  PRINT_STR(msg);\
-  sprintf(msg, NETMASK_MSG, netInfo.sn[0], netInfo.sn[1], netInfo.sn[2], netInfo.sn[3]);								\
-  PRINT_STR(msg);\
-  sprintf(msg, GW_MSG, netInfo.gw[0], netInfo.gw[1], netInfo.gw[2], netInfo.gw[3]);										\
-  PRINT_STR(msg);\
+  sprintf(debugMessage, MAC_MSG, netInfo.mac[0], netInfo.mac[1], netInfo.mac[2], netInfo.mac[3], netInfo.mac[4], netInfo.mac[5]);\
+  PRINT_STR(debugMessage);\
+  sprintf(debugMessage, IP_MSG, netInfo.ip[0], netInfo.ip[1], netInfo.ip[2], netInfo.ip[3]);										\
+  PRINT_STR(debugMessage);\
+  sprintf(debugMessage, NETMASK_MSG, netInfo.sn[0], netInfo.sn[1], netInfo.sn[2], netInfo.sn[3]);								\
+  PRINT_STR(debugMessage);\
+  sprintf(debugMessage, GW_MSG, netInfo.gw[0], netInfo.gw[1], netInfo.gw[2], netInfo.gw[3]);										\
+  PRINT_STR(debugMessage);\
 } while(0)
 
 int32_t Ethernet_Init(Ethernet_t* eth, Net_t* device, Net_t* host){
@@ -124,7 +141,7 @@ uint8_t isLinked(){
 }
 
 // return transmited data size or error code
-int32_t udp_send(RingBuffer_t* buf){
+int32_t udp_send(Buffer_t* buf){
 
 	int32_t ret = 0;
 	uint16_t size;
@@ -139,13 +156,13 @@ int32_t udp_send(RingBuffer_t* buf){
 			  if (ret < 0)
 			  {
 				  PRINT_MSG_STR("UDP Send | Error data send: %li \r\n", ret);
-				  if (ret == -13) PRINT_STR("TIMEOUT... \r\n");
+				  if (ret == -13) //PRINT_STR("TIMEOUT... \r\n");
 				  return ret;
 			  }
 
 			size = (uint16_t) ret;
 			Buffer_clear(buf);
-			//PRINT_MSG_STR("UDP Send | Transmited data size: %i \r\n", size);
+			PRINT_MSG_STR("UDP Send | Transmited data size: %i \r\n", size);
 			break;
 
 		case SOCK_CLOSED:
@@ -164,7 +181,7 @@ int32_t udp_send(RingBuffer_t* buf){
 }
 
 // return received data size o error code
-int32_t udp_read(RingBuffer_t* buf){
+int32_t udp_read(Buffer_t* buf){
 
 	int32_t  ret = 0;
 	uint16_t size;
@@ -177,7 +194,7 @@ int32_t udp_read(RingBuffer_t* buf){
 			 if((size = getSn_RX_RSR(sn)) > 0)
 			 {
 				 if(size > buf->size) size = buf->size;
-				 ret = recvfrom(sn, buf->data, size, eth_ptr->host.ip, eth_ptr->host.outputPort);
+				 ret = recvfrom(sn, buf->data, size, eth_ptr->host.ip, &eth_ptr->host.outputPort);
 				 if (ret <= 0)
 				 {
 					 PRINT_MSG_STR("UDP Read | Error data read: %li \r\n", ret);
@@ -185,7 +202,7 @@ int32_t udp_read(RingBuffer_t* buf){
 				 }
 				 size = (uint16_t) ret;
 				 buf->elements = ret;
-				 //PRINT_MSG_STR("UDP Read | Received data size: %i \r\n", size);
+				 PRINT_MSG_STR("UDP Read | Received data size: %i \r\n", size);
 			 }
 			 break;
 

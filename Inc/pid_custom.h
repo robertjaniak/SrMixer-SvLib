@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef SVLIB_INC_PID__CUSTOM_H_
-#define SVLIB_INC_PID__CUSTOM_H_
+#ifndef SVLIB_INC_PID_CUSTOM_H_
+#define SVLIB_INC_PID_CUSTOM_H_
 
 #include "global.h"
 
@@ -68,4 +68,4 @@ void setActivityTimeout(PID_t* pid, float s);
 /// Reset the sum of the previous errors to zero.
 void resetIntegral(PID_t* pid);
 
-#endif /* SVLIB_INC_PID__CUSTOM_H_ */
+#endif /* SVLIB_INC_PID_CUSTOM_H_ */

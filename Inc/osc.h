@@ -5,10 +5,10 @@
  *      Author: rober
  */
 
-#ifndef INC_OSC_H_
-#define INC_OSC_H_
+#ifndef SVLIB_INC_OSC_H_
+#define SVLIB_INC_OSC_H_
 
-#include "sv_globals.h"
+#include "global.h"
 #include "tinyosc.h"
 #include "buffer.h"
 
@@ -28,8 +28,8 @@ typedef enum {
 } OSC_Events;
 
 typedef struct {
-  RingBuffer_t tx;
-  RingBuffer_t rx;
+  Buffer_t tx;
+  Buffer_t rx;
   char* deviceName;
   int32_t deviceId;
   char* oscPrefix;
@@ -66,5 +66,5 @@ int32_t osc_getNextInt32(OSC_Message* msg);
 
 uint8_t is_osc_prefix_correct(OSC_Message* message);
 
-#endif /* INC_OSC_H_ */
+#endif /* SVLIB_INC_OSC_H_ */
 

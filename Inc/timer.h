@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef INC_TIMER_H_
-#define INC_TIMER_H_
+#ifndef SVLIB_INC_TIMER_H_
+#define SVLIB_INC_TIMER_H_
 
 #include "global.h"
 
@@ -69,4 +69,4 @@ uint32_t TimerElapsed(Timer_t* timer);
 
 void TimerRegisterCallback(Timer_t* timer, void (*CallbackPtr)(void*), Timer_event event);
 
-#endif /* INC_TIMER_H_ */
+#endif /* SVLIB_INC_TIMER_H_ */

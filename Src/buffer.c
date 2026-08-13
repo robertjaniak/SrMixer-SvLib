@@ -1,7 +1,7 @@
 
-#include "buffer.h"
-#include "global.h"
 
+#include "buffer.h"
+#include "string.h"
 
 void Buffer_init(Buffer_t *buffer, uint8_t* data, size_t size, bufferType type) {
 
@@ -360,7 +360,7 @@ void unpack_8b(uint8_t* dest, uint8_t* src, size_t size){
 
 void unpack_16b(uint8_t* src, uint16_t* dest, size_t size /* endianness */){
 
-	uint32_t count = 0;
+	//uint32_t count = 0;
 
 	for (int i = 0; i < size ; i++){
 		((uint8_t*)dest)[i + 0] = src[i + 0];

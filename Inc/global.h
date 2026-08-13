@@ -5,16 +5,16 @@
  *      Author: rober
  */
 
-#ifndef INC_SVLIB_H_
-#define INC_SVLIB_H_
+#ifndef SVLIB_INC_GLOBAL_H_
+#define SVLIB_INC_GLOBAL_H_
 
 #include "main.h"
-#include "debug.h"
 
 #define OFF 0U
 #define ON 1U
 #define DEISABLE 0U
 #define ENABLE 1U
+
 
 typedef struct {
 	GPIO_TypeDef* port;
@@ -47,4 +47,4 @@ int32_t findBit(int32_t n, uint8_t k);
 void loopValue(uint8_t* value, uint8_t min, uint8_t max);
 void toggleValue(uint32_t* value);
 
-#endif /* INC_SVLIB_H_ */
+#endif /* SVLIB_INC_GLOBAL_H_ */

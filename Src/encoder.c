@@ -5,7 +5,7 @@
  *      Author: rober
  */
 
-#include "../Inc/encoder.h"
+#include "encoder.h"
 
 //void positionAverage(Pot_t* pot) {
 //

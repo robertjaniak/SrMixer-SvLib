@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef INC_ETHERNET_H_
-#define INC_ETHERNET_H_
+#ifndef SVLIB_INC_ETHERNET_H_
+#define SVLIB_INC_ETHERNET_H_
 
 #include "global.h"
 #include "buffer.h"
@@ -23,7 +23,7 @@ typedef struct {
 typedef struct {
 	Net_t device;
 	Net_t host;
-	IO_pin select_line;
+	IOPin select_line;
 }Ethernet_t;
 
 int32_t Ethernet_Init(Ethernet_t* eth, Net_t* dev, Net_t* host);
@@ -31,8 +31,8 @@ void setDeviceNet(Net_t* net);
 void setHostNet(Net_t* net);
 uint8_t isLinked();
 
-int32_t udp_send(RingBuffer_t* buf);
-int32_t udp_read(RingBuffer_t* buf);
+int32_t udp_send(Buffer_t* buf);
+int32_t udp_read(Buffer_t* buf);
 
 #define SEPARATOR            "=============================================\r\n"
 #define WELCOME_MSG  		 "Welcome to STM32Nucleo Ethernet configuration\r\n"
@@ -54,4 +54,4 @@ int32_t udp_read(RingBuffer_t* buf);
 
 
 
-#endif /* INC_ETHERNET_H_ */
+#endif /* SVLIB_INC_ETHERNET_H_ */

@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "string.h"
 
 #define BKG 0b0001000
 #define EN  0b00000100

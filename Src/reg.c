@@ -5,7 +5,7 @@
  *      Author: rober
  */
 
-#include <reg.h>
+#include "reg.h"
 
 void Reg_Init(Reg_t *reg){
 	reg->to_update = 1;
@@ -15,7 +15,11 @@ void Reg_Init(Reg_t *reg){
 void sendSPIdata(Reg_t *reg){
 
 	HAL_GPIO_WritePin(reg->latch.port, reg->latch.pin, GPIO_PIN_RESET);
+
+#ifdef HAL_SPI_MODULE_ENABLED
 	HAL_SPI_Transmit(reg->hspi, reg->data, reg->size, 10);
+#endif /* HAL_SPI_MODULE_ENABLED */
+
 	HAL_GPIO_WritePin(reg->latch.port, reg->latch.pin, GPIO_PIN_SET);
 
 	reg->to_update = 0;

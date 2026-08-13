@@ -8,6 +8,7 @@
 #ifndef SVLIB_INC_KEYSTROKE_H_
 #define SVLIB_INC_KEYSTROKE_H_
 
+#include "global.h"
 
 #define SHORTCUT_ADDRESS "Shortcut"
 #define KEY_ADDRESS "Key"

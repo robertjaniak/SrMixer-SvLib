@@ -12,11 +12,17 @@
 #include "global.h"
 #include "timer.h"
 
+
+
 typedef struct {
 	uint8_t id;
 	uint8_t *data;
 	uint16_t size;
+
+#ifdef HAL_SPI_MODULE_ENABLED
 	SPI_HandleTypeDef *hspi;
+#endif /* HAL_SPI_MODULE_ENABLED */
+
 	IOPin latch;
 	uint8_t to_update;
 
@@ -33,5 +39,7 @@ uint8_t needsUpdate(Reg_t *reg);
 
 void setRegBit(Reg_t *reg, uint8_t bit);
 void resetRegBit(Reg_t *reg, uint8_t bit);
+
+
 
 #endif /* SVLIB_INC_REG_H_ */

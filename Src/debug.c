@@ -22,5 +22,5 @@ void workingTime_Print(WorkingTime_t* wt){
 	wt->period = wt->now - wt->last;
 	sprintf(str,"WORKIN TIME [%s] :  %li \r\n", wt->name, wt->period);
 
-	DBG_PRINT(str);
+	//DBG_PRINT(str);
 };

@@ -6,6 +6,7 @@
  */
 
 #include "device.h"
+#include "string.h"
 
 
 void Device_Init(Device_t* device, char* name, uint32_t id){

@@ -5,8 +5,8 @@
  *      Author: rober
  */
 
-#ifndef INC_POT_H_
-#define INC_POT_H_
+#ifndef SVLIB_INC_POT_H_
+#define SVLIB_INC_POT_H_
 
 #include "global.h"
 #include "timer.h"
@@ -154,4 +154,4 @@ void Pot_callbackRegister(Pot_t* pot, void (*CallbackPtr)(void*), Pot_event even
 
 void positionAverage(Pot_t* pot);
 
-#endif /* INC_POT_H_ */
+#endif /* SVLIB_INC_POT_H_ */

@@ -12,7 +12,7 @@ static float calcAlphaEMA(float fn);
 
 /// Very basic, mostly educational PID controller with derivative filter.
 
-void PID_Init(PID_t* pid, float _kp, float _ki, float _kd, float _fc, float _Ts){
+void PID_Simple_Init(PID_t* pid, float _kp, float _ki, float _kd, float _fc, float _Ts){
 
 /// @param  kp  Proportional gain   @f$ K_p @f$
 /// @param  ki  Integral gain       @f$ K_i @f$
@@ -36,7 +36,7 @@ void PID_Init(PID_t* pid, float _kp, float _ki, float _kd, float _fc, float _Ts)
 /// Update the controller with the given position measurement `meas_y` and
 /// return the new control signal.
 
-float PID_update(PID_t* pid, float reference, float meas_y) {
+float PID_Simple_Update(PID_t* pid, float reference, float meas_y) {
     // e[k] = r[k] - y[k], error between setpoint and true position
     float error = reference - meas_y;
     // e_f[k] = α e[k] + (1-α) e_f[k-1], filtered error

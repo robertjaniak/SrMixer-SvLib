@@ -13,7 +13,7 @@
 #include <stdbool.h>
 
 
-#include "adc.h"
+//#include "adc.h"
 
 
 #define MOTOPOT_CALIBATION_TIME 12000
@@ -30,6 +30,9 @@
 #define MAX_SPEED 255
 #define LIN_STOP 23
 #define LOG_STOP 12
+
+
+#ifdef HAL_ADC_MODULE_ENABLED
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +91,7 @@ static void PotSpeedDetectElapsedCallback(void* handle){
 	Motopot2_t* motopot = (Motopot2_t*)handle;
 
 	uint32_t dist = abs(Pot_getCurrentPosition(&motopot->pot) - motopot->temp_position);
-	uint32_t time = TimerGetTime(&motopot->speed_timer);
+	uint32_t time = Timer_GetTime(&motopot->speed_timer);
 
 	if (time > 0){
 		motopot->speed = (motopot->speed + ((dist * 1000) / time)) / 2;
@@ -1123,5 +1126,5 @@ void Motopot2_Calibration(Motopot2_t* motopot[], uint32_t count){
 //
 //}
 
-
+#endif /* HAL_ADC_MODULE_ENABLED */
 

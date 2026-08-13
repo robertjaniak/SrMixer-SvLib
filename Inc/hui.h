@@ -8,8 +8,7 @@
 #ifndef SVLIB_INC_HUI_H_
 #define SVLIB_INC_HUI_H_
 
-#include "main.h"
-#include "sv_globals.h"
+#include "global.h"
 #include "osc.h"
 
 #define HUI_PING_ADDRESS "NoteOn/1/0"
