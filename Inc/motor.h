@@ -11,6 +11,12 @@
 #ifndef SVLIB_INC_MOTOR_H_
 #define SVLIB_INC_MOTOR_H_
 
+typedef struct{
+	TIM_HandleTypeDef* htim;
+	uint32_t channel;
+} PWMOutput;
+
+
 typedef enum {
 	MOTOR_GPIO,
 	MOTOR_PWM,

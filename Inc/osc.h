@@ -8,7 +8,7 @@
 #ifndef SVLIB_INC_OSC_H_
 #define SVLIB_INC_OSC_H_
 
-#include "global.h"
+#include "SvLib.h"
 #include "tinyosc.h"
 #include "buffer.h"
 

@@ -9,7 +9,7 @@
 #define SVLIB_INC_REG_H_
 
 
-#include "global.h"
+#include "SvLib.h"
 #include "timer.h"
 
 

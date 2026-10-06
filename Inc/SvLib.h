@@ -21,12 +21,6 @@ typedef struct {
 	uint16_t pin;
 } IOPin;
 
-typedef struct{
-	TIM_HandleTypeDef* htim;
-	uint32_t channel;
-} PWMOutput;
-
-
 int32_t scaleValue(int32_t value, int32_t oldMin, int32_t oldMax, int32_t newMin, int32_t newMax);
 
 // Function to set the kth bit of n

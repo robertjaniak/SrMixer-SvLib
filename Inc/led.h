@@ -8,7 +8,7 @@
 #ifndef SVLIB_INC_LED_H_
 #define SVLIB_INC_LED_H_
 
-#include "global.h"
+#include "SvLib.h"
 #include "timer.h"
 
 #define MAX_LED_IN_GROUP 8

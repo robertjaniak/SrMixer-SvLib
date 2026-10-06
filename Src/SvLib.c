@@ -5,7 +5,7 @@
  *      Author: rober
  */
 
-#include "global.h"
+#include "SvLib.h"
 
 
 int32_t scaleValue(int32_t value, int32_t oldMin, int32_t oldMax, int32_t newMin, int32_t newMax) {

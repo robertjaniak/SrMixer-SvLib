@@ -8,7 +8,7 @@
 #ifndef SVLIB_INC_TIMER_H_
 #define SVLIB_INC_TIMER_H_
 
-#include "global.h"
+#include "SvLib.h"
 
 typedef enum {
 	TIMER_EVENT_STOP       = 0,
