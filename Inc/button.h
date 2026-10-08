@@ -8,7 +8,7 @@
 #ifndef SVLIB_INC_BUTTON_H_
 #define SVLIB_INC_BUTTON_H_
 
-#include "global.h"
+#include "SVlib.h"
 #include "timer.h"
 #include "mux.h"
 
@@ -47,7 +47,7 @@ typedef struct {
 	 char* name;
 	 GPIO_TypeDef* port;
 	 uint16_t pin;
-	 Mux16_t* mux;
+	 Mux_t* mux;
 	 int32_t mux_id;
 	 BTN_Type type;
 	 BTN_Polarity polarity;
@@ -91,7 +91,7 @@ typedef struct {
 } Button_t;
 
 void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, char* name, BTN_Modes mode);
-void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, char* name, BTN_Modes mode);
+void Button_Mux_Init(Button_t* btn, Mux_t* mux, int32_t id, char* name, BTN_Modes mode);
 void Button_StartDebouncing(Button_t* btn);
 void Button_Service(Button_t* btn);
 void Button_CallbackRegister(Button_t* btn, void (*CallbackPtr)(void*), BTN_Events event);

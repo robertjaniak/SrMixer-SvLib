@@ -31,6 +31,7 @@ typedef struct {
 void Reg_Init(Reg_t *reg);
 
 void sendSPIdata(Reg_t *reg);
+void sendSPIdataReverse(Reg_t *reg);
 
 void clearAllRegisters(Reg_t *reg);
 void fullAllRegisters(Reg_t *reg);

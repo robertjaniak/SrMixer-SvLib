@@ -68,7 +68,7 @@ void Button_GPIO_Init(Button_t* btn, GPIO_TypeDef* port, uint16_t pin, char* nam
 		Button_Init(btn);
 }
 
-void Button_Mux_Init(Button_t* btn, Mux16_t* mux, int32_t id, char* name, BTN_Modes mode){
+void Button_Mux_Init(Button_t* btn, Mux_t* mux, int32_t id, char* name, BTN_Modes mode){
 
 		btn->type = BTN_TYPE_MUX;
 
