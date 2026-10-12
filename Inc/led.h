@@ -5,18 +5,24 @@
  *      Author: rober
  */
 
-#ifndef SVLIB_INC_LED_H_
+#ifndef SVLIB_INC_LED_Hp
 #define SVLIB_INC_LED_H_
 
 #include "SvLib.h"
 #include "timer.h"
+#include "reg.h"
 
-#define MAX_LED_IN_GROUP 8
+#define MAX_LED_IN_GROUP 16
 
 typedef enum {
 	LED_POLARITY_POSITIVE = 0,
 	LED_POLARITY_NEGATIVE = 1,
-} LED_Polarity;
+} LED_polarity;
+
+typedef enum {
+	LED_TYPE_GPIO = 0,
+	LED_TYPE_REG = 1,
+} LED_type;
 
 typedef enum {
 	LED_OFF = 0,
@@ -29,18 +35,28 @@ typedef enum {
 } LED_Blink_state;
 
 typedef struct {
+	uint8_t id;
+	Reg_t *reg;
+	LED_type type;
 	GPIO_TypeDef* port;
 	uint16_t pin;
 	LED_state state;
-	LED_Polarity polarity;
+	LED_polarity polarity;
 	int32_t blink;
 	LED_Blink_state blinkState;
 	Timer_t timer;
+
 }LED_t;
 
 typedef enum {
-	LED_GROUP_MODE_SINGLE_ACTIVE = 0,
-	LED_GROUP_MODE_MULTI_ACTIVE  = 1,
+	LED_GROUP_MODE_SINGLE_ACTIVE,
+	LED_GROUP_MODE_MULTI_ACTIVE,
+	LED_GROUP_MODE_ENCODER_SINGLE_ACTIVE,
+	LED_GROUP_MODE_ENCODER_MULTI_ACTIVE,
+	LED_GROUP_MODE_ENCODER_PAN_SINGLE_ACTIVE,
+	LED_GROUP_MODE_ENCODER_PAN_MULTI_ACTIVE,
+	LED_GROUP_MODE_ENCODER_WING_SINGLE_ACTIVE,
+	LED_GROUP_MODE_ENCODER_WING_MULTI_ACTIVE,
 } LED_group_mode;
 
 typedef enum {
@@ -50,15 +66,16 @@ typedef enum {
 
 typedef struct {
 	LED_t*  (*led_array_ptr)[];
-	uint32_t size; // count of leds
+	int32_t size; // count of leds
 	int32_t index;
 	_Bool active_array[MAX_LED_IN_GROUP]; // active led's array
 	LED_group_mode mode;
 	LED_group_state state;
 }LED_Group_t;
 
-void LED_Init(LED_t* led, GPIO_TypeDef* port, uint16_t GPIO_Pin, LED_state state, LED_Polarity polarity);
-void LED_GroupInit(LED_Group_t* led_group, LED_t* (*led_array)[], uint32_t size, int32_t idex, LED_group_mode mode);
+void LED_Init(LED_t* led, GPIO_TypeDef* port, uint16_t GPIO_Pin, LED_state state, LED_polarity polarity);
+void LED_Reg_Init(LED_t* out, Reg_t *reg, uint8_t id, LED_state state, LED_polarity polarity);
+void LED_Group_Init(LED_Group_t* led_group, LED_t* (*led_array)[], uint32_t size, int32_t idex, LED_group_mode mode);
 void LED_Service(LED_t* led);
 void LED_GroupService(LED_Group_t* led_group);
 void LED_On(LED_t* led);

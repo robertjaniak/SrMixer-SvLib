@@ -38,6 +38,12 @@ int32_t modifyBit(int32_t n, uint8_t k, uint8_t p);
 // Function to find the kth bit of n
 int32_t findBit(int32_t n, uint8_t k);
 
+// Swap 16bit value
+uint16_t swap16(uint16_t val);
+
+// Swap 32bit value
+uint32_t swap32(uint32_t val);
+
 void loopValue(uint8_t* value, uint8_t min, uint8_t max);
 void toggleValue(uint32_t* value);
 

@@ -7,8 +7,7 @@
 
 #include "led.h"
 
-
-void LED_Init(LED_t* led, GPIO_TypeDef* port, uint16_t pin, LED_state state, LED_Polarity polarity){
+void LED_Init(LED_t* led, GPIO_TypeDef* port, uint16_t pin, LED_state state, LED_polarity polarity){
 
 	led->port = port;
 	led->pin = pin;
@@ -21,13 +20,24 @@ void LED_Init(LED_t* led, GPIO_TypeDef* port, uint16_t pin, LED_state state, LED
 
 }
 
-void LED_GroupInit(LED_Group_t* led_group, LED_t* (*led_array)[], uint32_t size, int32_t index, LED_group_mode mode){
+void LED_Reg_Init(LED_t* led, Reg_t *_reg, uint8_t _id, LED_state state, LED_polarity polarity){
 
-	if (size > MAX_LED_IN_GROUP){
+	led->type = LED_TYPE_REG;
+	led->reg = _reg;
+	led->id = _id;
+	led->polarity = polarity;
+
+	LED_SetState(led, state);
+
+}
+
+void LED_Group_Init(LED_Group_t* led_group, LED_t* (*led_array)[], uint32_t size, int32_t index, LED_group_mode mode){
+
+	if (size > MAX_LED_IN_GROUP) {
 		size = MAX_LED_IN_GROUP;
 	}
 
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++) {
 		led_group->active_array[i] = 0;
 	}
 
@@ -40,39 +50,190 @@ void LED_GroupInit(LED_Group_t* led_group, LED_t* (*led_array)[], uint32_t size,
 
 }
 
-void LED_Service(LED_t* led){
+void LED_Service(LED_t* led) {
 	TimerService(&led->timer);
 }
 
-static void LedGroupClear(LED_Group_t* led_group){
+static void LedGroupClear(LED_Group_t* led_group) {
 
 	for (int i = 0; i < led_group->size; i++){
-		if ((*led_group->led_array_ptr)[i] != NULL){
+		if ((*led_group->led_array_ptr)[i] != NULL) {
 			LED_Off((*led_group->led_array_ptr)[i]);
 		}
 		led_group->active_array[i] = 0;
 	}
 }
 
-static void LED_GroupUpdate(LED_Group_t* led_group){
+static void LED_GroupUpdate(LED_Group_t* led_group) {
 
-	switch (led_group->mode){
+	LedGroupClear(led_group);
 
-		case LED_GROUP_MODE_SINGLE_ACTIVE:
+	switch (led_group->mode) {
 
-			LedGroupClear(led_group);
+		case LED_GROUP_MODE_SINGLE_ACTIVE:{
 
-			if ((*led_group->led_array_ptr)[led_group->index] != NULL){
+			if (led_group->index > led_group->size - 1) led_group->index = led_group->size - 1;
+			if (led_group->index < 1) led_group->index = 1;
+
+			if ((*led_group->led_array_ptr)[led_group->index] != NULL) {
 				LED_On((*led_group->led_array_ptr)[led_group->index]);
 			}
 
 			led_group->active_array[led_group->index] = 1;
-
-
 			break;
+		}
 
 		case LED_GROUP_MODE_MULTI_ACTIVE:
 			break;
+
+		case LED_GROUP_MODE_ENCODER_SINGLE_ACTIVE: {
+
+			if (led_group->index > led_group->size - 1) led_group->index = led_group->size - 1;
+			if (led_group->index < 1) led_group->index = 1;
+
+			if ((*led_group->led_array_ptr)[led_group->index] != NULL) {
+				LED_On((*led_group->led_array_ptr)[led_group->index]);
+			}
+
+			led_group->active_array[led_group->index] = 1;
+			break;
+		}
+
+		case LED_GROUP_MODE_ENCODER_MULTI_ACTIVE:
+
+			if (led_group->index > led_group->size - 1) led_group->index = led_group->size - 1;
+			if (led_group->index < 1) led_group->index = 1;
+
+			for (int i = 1; i <= led_group->index; i++) {
+				if ((*led_group->led_array_ptr)[i] != NULL) {
+					LED_On((*led_group->led_array_ptr)[i]);
+				}
+			}
+
+			led_group->active_array[led_group->index] = 1;
+
+			break;
+
+		case LED_GROUP_MODE_ENCODER_PAN_SINGLE_ACTIVE:
+
+			if (led_group->index < - (led_group->size / 2) + 1) led_group->index = - (led_group->size / 2) + 1;
+			if (led_group->index >   (led_group->size / 2) - 1) led_group->index =   (led_group->size / 2) - 1;
+
+			int16_t index = led_group->index + (led_group->size / 2);
+
+			if ((*led_group->led_array_ptr)[index] != NULL) {
+				LED_On((*led_group->led_array_ptr)[index]);
+			}
+
+			led_group->active_array[index] = 1;
+			break;
+
+		case LED_GROUP_MODE_ENCODER_PAN_MULTI_ACTIVE: {
+
+			if (led_group->index < - (led_group->size / 2) + 1) led_group->index = - (led_group->size / 2) + 1;
+			if (led_group->index >   (led_group->size / 2) - 1) led_group->index =   (led_group->size / 2) - 1;
+
+			int16_t index = led_group->index + (led_group->size / 2);
+
+			if (index > led_group->size / 2) {
+				for (int i = led_group->size / 2; i <= index; i++) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+					}
+				}
+			}
+
+			else if (index < led_group->size / 2) {
+				for (int i = led_group->size / 2; i >= index; i--) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+					}
+				}
+			}
+
+			else {
+				if ((*led_group->led_array_ptr)[index] != NULL) {
+					LED_On((*led_group->led_array_ptr)[index]);
+				}
+			}
+
+			led_group->active_array[index] = 1;
+			break;
+		}
+
+		case LED_GROUP_MODE_ENCODER_WING_SINGLE_ACTIVE: {
+
+			if (led_group->index < - (led_group->size / 2) + 1) led_group->index = - (led_group->size / 2) + 1;
+			if (led_group->index >   (led_group->size / 2) - 1) led_group->index =   (led_group->size / 2) - 1;
+
+			int16_t index = index = (led_group->size / 2) + led_group->index;
+
+			if ((*led_group->led_array_ptr)[index] != NULL) {
+				LED_On((*led_group->led_array_ptr)[index]);
+				led_group->active_array[index] = 1;
+			}
+
+			index = (led_group->size / 2) - led_group->index;
+
+			if ((*led_group->led_array_ptr)[index] != NULL) {
+				LED_On((*led_group->led_array_ptr)[index]);
+				led_group->active_array[index] = 1;
+			}
+
+			break;
+		}
+
+		case LED_GROUP_MODE_ENCODER_WING_MULTI_ACTIVE: {
+
+			if (led_group->index < - (led_group->size / 2) + 1) led_group->index = - (led_group->size / 2) + 1;
+			if (led_group->index >   (led_group->size / 2) - 1) led_group->index =   (led_group->size / 2) - 1;
+
+			int16_t index =  (led_group->size / 2) + led_group->index;
+
+			if (index > led_group->size / 2) {
+
+				for (int i = led_group->size / 2; i <= (led_group->size / 2) + led_group->index; i++) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+						led_group->active_array[index] = 1;
+					}
+				}
+
+				for (int i = led_group->size / 2; i >= (led_group->size / 2) - led_group->index; i--) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+						led_group->active_array[index] = 1;
+					}
+				}
+			}
+
+			else if (index < led_group->size / 2) {
+
+				for (int i = led_group->size / 2; i >= (led_group->size / 2) + led_group->index; i--) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+						led_group->active_array[index] = 1;
+					}
+				}
+
+				for (int i = led_group->size / 2; i <= (led_group->size / 2) - led_group->index; i++) {
+					if ((*led_group->led_array_ptr)[i] != NULL) {
+						LED_On((*led_group->led_array_ptr)[i]);
+						led_group->active_array[index] = 1;
+					}
+				}
+
+			}
+
+			else {
+				if ((*led_group->led_array_ptr)[index] != NULL) {
+					LED_On((*led_group->led_array_ptr)[index]);
+					led_group->active_array[index] = 1;
+				}
+			}
+
+			break;
+		}
 
 		default:
 			break;
@@ -85,9 +246,7 @@ static void LED_GroupUpdate(LED_Group_t* led_group){
 
 void LED_GroupService(LED_Group_t* led_group){
 
-	if (led_group->state == LED_GROUP_STATE_NEED_UPDATE){
-		LED_GroupUpdate(led_group);
-	}
+	if (led_group->state == LED_GROUP_STATE_NEED_UPDATE) LED_GroupUpdate(led_group);
 
 }
 
@@ -96,16 +255,35 @@ void LED_On(LED_t* led){
 
 	led->state = LED_ON;
 
-	switch (led->polarity){
+	switch (led->type) {
 
-	case LED_POLARITY_POSITIVE:
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_SET);
-		break;
+		case LED_TYPE_GPIO:
 
-	case LED_POLARITY_NEGATIVE:
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
-		break;
+			switch (led->polarity){
 
+				case LED_POLARITY_POSITIVE:
+					HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_SET);
+					break;
+
+				case LED_POLARITY_NEGATIVE:
+					HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
+					break;
+			}
+			break;
+
+		case LED_TYPE_REG:
+
+			switch (led->polarity){
+
+				case LED_POLARITY_POSITIVE:
+					setRegBit(led->reg, led->id);
+					break;
+
+				case LED_POLARITY_NEGATIVE:
+					resetRegBit(led->reg, led->id);
+					break;
+			}
+			break;
 	}
 }
 
@@ -113,16 +291,35 @@ void LED_Off(LED_t* led){
 
 	led->state = LED_OFF;
 
-	switch (led->polarity){
+	switch (led->type) {
 
-	case LED_POLARITY_POSITIVE:
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
-		break;
+		case LED_TYPE_GPIO:
 
-	case LED_POLARITY_NEGATIVE:
-		HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_SET);
-		break;
+			switch (led->polarity){
 
+				case LED_POLARITY_POSITIVE:
+					HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_RESET);
+					break;
+
+				case LED_POLARITY_NEGATIVE:
+					HAL_GPIO_WritePin(led->port, led->pin, GPIO_PIN_SET);
+					break;
+			}
+			break;
+
+		case LED_TYPE_REG:
+
+			switch (led->polarity){
+
+				case LED_POLARITY_POSITIVE:
+					resetRegBit(led->reg, led->id - 1);
+					break;
+
+				case LED_POLARITY_NEGATIVE:
+					setRegBit(led->reg, led->id - 1);
+					break;
+			}
+			break;
 	}
 }
 
@@ -153,16 +350,32 @@ static void LedReadState(LED_t* led){
 }
 
 int32_t LED_Toggle(LED_t* led){
-	HAL_GPIO_TogglePin(led->port, led->pin);
-	LedReadState(led);
+
+	switch (led->type) {
+
+		case LED_TYPE_GPIO:
+
+			 HAL_GPIO_TogglePin(led->port, led->pin);
+			 LedReadState(led);
+			 break;
+
+		case LED_TYPE_REG:
+
+			if (LED_GetState(led) > 0){
+				LED_Off(led);
+			}
+			else {
+				LED_On(led);
+			}
+			break;
+		}
 
 	return led->state;
-
 }
 
 _Bool LED_GetState(LED_t* led){
 	return led->state;
-};
+}
 
 void LED_SetState(LED_t* led, LED_state state){
 
@@ -236,26 +449,7 @@ int32_t LED_Group_Increase(LED_Group_t* led_group){
 	led_group->index++;
 	led_group->state = LED_GROUP_STATE_NEED_UPDATE;
 
-	switch (led_group->mode){
-
-		case LED_GROUP_MODE_SINGLE_ACTIVE:
-
-			if (led_group->index > led_group->size - 1){
-					led_group->index = 0;
-				}
-
-			break;
-
-		case LED_GROUP_MODE_MULTI_ACTIVE:
-			break;
-
-		default:
-			break;
-
-	}
-
 	return led_group->index;
-
 }
 
 int32_t LED_Group_Decrease(LED_Group_t* led_group){
@@ -263,25 +457,7 @@ int32_t LED_Group_Decrease(LED_Group_t* led_group){
 	led_group->index--;
 	led_group->state = LED_GROUP_STATE_NEED_UPDATE;
 
-	switch (led_group->mode){
-
-		case LED_GROUP_MODE_SINGLE_ACTIVE:
-			if (led_group->index < 0){
-				led_group->index = led_group->size - 1;
-			}
-
-			break;
-
-		case LED_GROUP_MODE_MULTI_ACTIVE:
-			break;
-
-		default:
-			break;
-
-	}
-
 	return led_group->index;
-
 }
 
 void LED_Group_SetActiveIndex(LED_Group_t* led_group, int32_t index){

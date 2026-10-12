@@ -52,3 +52,16 @@ void toggleValue(uint32_t* value){
 	}
 
 }
+
+uint16_t swap16(uint16_t val) {
+
+	return (val << 8) | (val >> 8);
+}
+
+uint32_t swap32(uint32_t val) {
+
+	return  ((val >> 24) & 0x000000FF) |
+			((val >> 8)  & 0x0000FF00) |
+			((val << 8)  & 0x00FF0000) |
+			((val << 24) & 0xFF000000);
+}
