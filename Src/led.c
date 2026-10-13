@@ -462,12 +462,29 @@ int32_t LED_Group_Decrease(LED_Group_t* led_group){
 
 void LED_Group_SetActiveIndex(LED_Group_t* led_group, int32_t index){
 
-	if(index > led_group->size - 1){
-		index = led_group->size - 1;
-	}
+	switch (led_group->mode) {
 
-	if(index < 0){
-		index = 0;
+		case LED_GROUP_MODE_SINGLE_ACTIVE:
+		case LED_GROUP_MODE_MULTI_ACTIVE:
+		case LED_GROUP_MODE_ENCODER_SINGLE_ACTIVE:
+		case LED_GROUP_MODE_ENCODER_MULTI_ACTIVE:
+
+			if(index > led_group->size - 1) index = led_group->size - 1;
+			if(index < 0) index = 0;
+			break;
+
+
+		case LED_GROUP_MODE_ENCODER_PAN_SINGLE_ACTIVE:
+		case LED_GROUP_MODE_ENCODER_PAN_MULTI_ACTIVE:
+		case LED_GROUP_MODE_ENCODER_WING_SINGLE_ACTIVE:
+		case LED_GROUP_MODE_ENCODER_WING_MULTI_ACTIVE:
+
+			if(index > (led_group->size / 2) - 1) index = (led_group->size / 2) - 1;
+			if(index < - (led_group->size / 2) + 1) index = - (led_group->size / 2) + 1;
+			break;
+
+		default:
+			break;
 	}
 
 	if (index != led_group->index){

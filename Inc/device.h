@@ -10,7 +10,7 @@
 
 
 #include "main.h"
-#include "global.h"
+#include "SvLib.h"
 
 typedef enum {
 	DEVICE_STATE_IDLE,
@@ -34,14 +34,13 @@ typedef enum {
 	TEST_FADER,
 	TEST_LCD,
 	TEST_COMMUNICATION,
+	TEST_USER,
 
 }DeviceTestType;
 
 typedef enum {
-
 	NO_DATA_TO_SEND,
 	NEW_DATA_READY_TO_SEND,
-
 }DataStatus;
 
 
