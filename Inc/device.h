@@ -9,8 +9,14 @@
 #define SVLIB_INC_DEVICE_H_
 
 
-#include "main.h"
+
 #include "SvLib.h"
+
+typedef enum {
+	DEVICE_MODE_MIXER,
+	DEVICE_MODE_CONTROLLER,
+	DEVICE_MODE_TEST,
+}DeviceMode;
 
 typedef enum {
 	DEVICE_STATE_IDLE,
@@ -35,7 +41,6 @@ typedef enum {
 	TEST_LCD,
 	TEST_COMMUNICATION,
 	TEST_USER,
-
 }DeviceTestType;
 
 typedef enum {
@@ -48,6 +53,7 @@ typedef struct {
 
 	uint32_t id;
 	char name[16];
+	DeviceMode mode;
 	DeviceState state;
 	DeviceTestType test;
 	uint8_t needUpdateSettings;
@@ -76,7 +82,7 @@ uint32_t getDeviceID(Device_t* device);
 DeviceState getDeviceState(Device_t* device);
 DeviceTestType getDeviceTest(Device_t* device);
 
-
+void setDeviceMode(Device_t* device, DeviceMode mode);
 void setDeviceState(Device_t* device, DeviceState state);
 void setDeviceTest(Device_t* device, DeviceTestType testType);
 void setDeviceAutosave(Device_t* device, uint8_t value);

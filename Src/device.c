@@ -50,6 +50,10 @@ DeviceTestType getDeviceTest(Device_t* device){
 	return device->test;
 }
 
+void setDeviceMode(Device_t* device, DeviceMode mode){
+	device->mode = mode;
+}
+
 void setDeviceState(Device_t* device, DeviceState state){
 	device->state = state;
 }
