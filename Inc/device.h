@@ -52,6 +52,7 @@ typedef enum {
 typedef struct {
 
 	uint32_t id;
+	uint32_t address;
 	char name[16];
 	DeviceMode mode;
 	DeviceState state;
@@ -71,7 +72,7 @@ typedef struct {
 
 } Device_t;
 
-void Device_Init(Device_t* device, char* name, uint32_t id);
+void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address);
 
 void setDeviceID(Device_t* device, uint32_t number);
 void setDeviceName(Device_t* device, char* name);

@@ -9,13 +9,14 @@
 #include "string.h"
 
 
-void Device_Init(Device_t* device, char* name, uint32_t id){
+void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address){
 
 	//device->name = name;
 
 	strcpy(device->name, name);
 
 	device->id = id;
+	device->address = address;
 	device->state = DEVICE_STATE_IDLE;
 	device->dataStatus = NO_DATA_TO_SEND;
 	device->communicationActive = 0;
