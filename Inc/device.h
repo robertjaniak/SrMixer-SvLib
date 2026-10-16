@@ -71,6 +71,14 @@ typedef struct {
 
 } Device_t;
 
+typedef enum {
+	HOST_NOT_CONNECTED        = 0x00,
+	HOST_CONNECTED            = 0x01,
+	HOST_WAIT_FOR_CONNECTION  = 0x02,
+	HOST_CONNECTION_LOST      = 0x03,
+	HOST_CONNECTION_ERROR                = 0x04,
+}hostConnectonState;
+
 void Device_Init(Device_t* device, char* name, uint32_t id);
 
 void setDeviceID(Device_t* device, uint32_t number);
