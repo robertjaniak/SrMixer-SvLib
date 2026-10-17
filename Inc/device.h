@@ -13,6 +13,14 @@
 #include "SvLib.h"
 
 typedef enum {
+	DEVICE_TYPE_MASTER,
+	DEVICE_TYPE_CHANNEL,
+	DEVICE_TYPE_CONTROLLER_FADER,
+	DEVICE_TYPE_CONTROLLER_PLUGIN,
+}DeviceType;
+
+
+typedef enum {
 	DEVICE_MODE_MIXER,
 	DEVICE_MODE_CONTROLLER,
 	DEVICE_MODE_TEST,
@@ -48,12 +56,13 @@ typedef enum {
 	NEW_DATA_READY_TO_SEND,
 }DataStatus;
 
+//typedef struct DeviceParameters prameter;
 
 typedef struct {
-
 	uint32_t id;
 	uint32_t address;
 	char name[16];
+	DeviceType type;
 	DeviceMode mode;
 	DeviceState state;
 	DeviceTestType test;
@@ -70,10 +79,12 @@ typedef struct {
 	uint32_t pingCount;
 	uint8_t updateScreen;
 
+	struct DeviceParameters* parameters;
+
 } Device_t;
 
 
-void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address);
+void Device_Init(Device_t* device, DeviceType type, char* name, uint32_t id, uint32_t address, struct DeviceParameters* param);
 void setDeviceID(Device_t* device, uint32_t number);
 void setDeviceName(Device_t* device, char* name);
 const char* getDeviceName(Device_t* device);

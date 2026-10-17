@@ -9,7 +9,7 @@
 #include "string.h"
 
 
-void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address){
+void Device_Init(Device_t* device, DeviceType type, char* name, uint32_t id, uint32_t address, struct DeviceParameters* param){
 
 	//device->name = name;
 
@@ -17,6 +17,7 @@ void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address){
 
 	device->id = id;
 	device->address = address;
+	device->type = type;
 	device->state = DEVICE_STATE_IDLE;
 	device->dataStatus = NO_DATA_TO_SEND;
 	device->communicationActive = 0;
@@ -24,6 +25,8 @@ void Device_Init(Device_t* device, char* name, uint32_t id, uint32_t address){
 	device->communicationIndicatorEnable = 0;
 	device->communicationIndicatorState = 3;
 	device->updateScreen = 0;
+
+	device->parameters = param;
 
 }
 
